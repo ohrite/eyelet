@@ -36,8 +36,8 @@ function git_fetch () {
   
   builtin cd $install_path
 
-  if ! git pull --tags > /dev/null 2>&1; then
-    echo "Unable to pull tags"
+  if ! git fetch --tags > /dev/null 2>&1; then
+    echo "Unable to fetch tags"
     exit 1
   fi
 
