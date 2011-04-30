@@ -1,0 +1,54 @@
+#!/usr/bin/env bash -x
+
+base_name=eyelet
+author_name=ohrite
+git_url=git://github.com/$author_name/$base_name.git
+https_url=https://github.com/$author_name/$base_name.git
+install_path=$HOME/.$base_name
+tag=master
+installer_location=https://github.com/$author_name/$base_name/raw/$tag/install
+
+function usage () {
+  echo <<-USAGE
+usage: $0 options
+
+Install eyelet 
+
+OPTIONS
+    -h      Display this message
+    -t=TAG  Install a specific tag (by name or SHA) from github
+USAGE
+}
+
+function git_fetch () {
+  which git>/dev/null || exit 1
+  
+  if [[ ! -d $install_path ]]; then
+    if ! git clone $git_url $install_path; then
+      echo "Unable to clone $git_url, trying https"
+      if ! git clone $https_url $install_path; then
+        echo "Unable to clone $https_url"
+        exit 1
+      fi
+    fi
+  fi
+  
+  builtin cd $install_path
+
+  if ! git checkout $tag 2>/dev/null; then
+    echo "Unable to checkout $tag"
+    exit 1
+  fi
+  
+  git pull --rebase origin $tag
+}
+
+while getopts "ht:" a; do
+  case $a in
+    (h) usage; exit 0 ;;
+    (t) tag=$a ;;
+    (*) echo "Unknown argument: $a"; usage; exit 1 ;;
+  esac
+done
+
+git_fetch
