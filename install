@@ -36,6 +36,11 @@ function git_fetch () {
   
   builtin cd $install_path
 
+  if ! git pull --tags > /dev/null 2>&1; then
+    echo "Unable to pull tags"
+    exit 1
+  fi
+
   if ! git checkout $tag > /dev/null 2>&1; then
     echo "Unable to checkout $tag"
     exit 1
