@@ -7,7 +7,7 @@ author_name=ohrite
 git_url=git://github.com/$author_name/$base_name.git
 https_url=https://github.com/$author_name/$base_name.git
 install_path=$HOME/.$base_name
-tag=latest-stable
+ref=latest-stable
 
 function show_usage () {
   cat <<USAGE
@@ -16,7 +16,7 @@ usage: $0 options
 Install eyelet 
 
 OPTIONS
-    -t|--tag   TAG  Install a specific tag (by name or SHA) from github
+    -r|--ref   REF  Install a specific ref (by name or SHA) from github
     -h|--help       Display this message
 USAGE
 }
@@ -46,11 +46,11 @@ function git_fetch () {
     exit 1
   fi
 
-  if ! git checkout $tag > /dev/null 2>&1; then
-    echo "Unable to checkout $tag"
+  if ! git checkout $ref > /dev/null 2>&1; then
+    echo "Unable to checkout $ref"
     exit 1
   else
-    echo "Checked out $tag of $base_name"
+    echo "Checked out $ref of $base_name"
   fi
 }
 
