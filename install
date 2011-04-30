@@ -7,7 +7,7 @@ author_name=ohrite
 git_url=git://github.com/$author_name/$base_name.git
 https_url=https://github.com/$author_name/$base_name.git
 install_path=$HOME/.$base_name
-tag=master
+tag=latest-stable
 
 function show_usage () {
   cat <<USAGE
