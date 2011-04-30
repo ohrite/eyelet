@@ -60,12 +60,12 @@ while [[ $# -gt 0 ]]; do
       show_usage
       exit 0
       ;;
-    -t|--tag)
+    -r|--ref)
       if [[ -n "${2:-}" ]] ; then
-        tag="$2"
+        ref="$2"
         shift
       else
-        echo "$1 must be followed by a tag."
+        echo "$1 must be followed by a ref SHA or name."
         exit 1
       fi
       ;;
