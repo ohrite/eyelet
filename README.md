@@ -6,7 +6,7 @@ Eyelet is a bash script that updates itself.
 
 ## How does it know what to fetch?
 
-The `latest-stable` tag points eyelet at the right place.  Just don't forget to update the tag!
+The `latest-stable` branch points eyelet at the right place.  Or whatever.  You'll see.
 
 ## But why?
 
