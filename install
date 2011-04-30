@@ -24,9 +24,9 @@ function git_fetch () {
   which git>/dev/null || exit 1
   
   if [[ ! -d $install_path ]]; then
-    if ! git clone $git_url $install_path > /dev/null; then
+    if ! git clone $git_url $install_path > /dev/null 2>&1; then
       echo "Unable to clone $git_url, trying https"
-      if ! git clone $https_url $install_path > /dev/null; then
+      if ! git clone $https_url $install_path > /dev/null 2>&1; then
         echo "Unable to clone $https_url"
         exit 1
       fi
