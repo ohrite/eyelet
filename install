@@ -41,16 +41,16 @@ function git_fetch () {
     exit 1
   fi
 
+  if ! git pull --rebase origin master > /dev/null 2>&1; then
+    echo "Unable to pull $base_name to latest master"
+    exit 1
+  fi
+
   if ! git checkout $tag > /dev/null 2>&1; then
     echo "Unable to checkout $tag"
     exit 1
-  fi
-  
-  if ! git pull --rebase origin $tag > /dev/null 2>&1; then
-    echo "Unable to pull $base_name to latest $tag"
-    exit 1
   else
-    echo "Pulled $base_name from latest $tag"
+    echo "Checked out $tag of $base_name"
   fi
 }
 
