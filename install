@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# To run: 
+#   bash < <(curl -s https://github.com/$author_name/$base_name/raw/$tag/install)
 
 base_name=eyelet
 author_name=ohrite
@@ -6,7 +8,6 @@ git_url=git://github.com/$author_name/$base_name.git
 https_url=https://github.com/$author_name/$base_name.git
 install_path=$HOME/.$base_name
 tag=master
-installer_location=https://github.com/$author_name/$base_name/raw/$tag/install
 
 function show_usage () {
   cat <<USAGE
@@ -70,6 +71,5 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
-
 
 git_fetch
