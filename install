@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
 base_name=eyelet
 author_name=ohrite
@@ -8,15 +8,15 @@ install_path=$HOME/.$base_name
 tag=master
 installer_location=https://github.com/$author_name/$base_name/raw/$tag/install
 
-function usage () {
-  echo <<-USAGE
+function show_usage () {
+  cat <<USAGE
 usage: $0 options
 
 Install eyelet 
 
 OPTIONS
-    -h      Display this message
-    -t=TAG  Install a specific tag (by name or SHA) from github
+    -t|--tag   TAG  Install a specific tag (by name or SHA) from github
+    -h|--help       Display this message
 USAGE
 }
 
@@ -24,9 +24,9 @@ function git_fetch () {
   which git>/dev/null || exit 1
   
   if [[ ! -d $install_path ]]; then
-    if ! git clone $git_url $install_path; then
+    if ! git clone $git_url $install_path > /dev/null; then
       echo "Unable to clone $git_url, trying https"
-      if ! git clone $https_url $install_path; then
+      if ! git clone $https_url $install_path > /dev/null; then
         echo "Unable to clone $https_url"
         exit 1
       fi
@@ -35,20 +35,41 @@ function git_fetch () {
   
   builtin cd $install_path
 
-  if ! git checkout $tag 2>/dev/null; then
+  if ! git checkout $tag > /dev/null 2>&1; then
     echo "Unable to checkout $tag"
     exit 1
   fi
   
-  git pull --rebase origin $tag
+  if ! git pull --rebase origin $tag > /dev/null 2>&1; then
+    echo "Unable to pull $base_name to latest $tag"
+    exit 1
+  else
+    echo "Pulled $base_name from latest $tag"
+  fi
 }
 
-while getopts "ht:" a; do
-  case $a in
-    (h) usage; exit 0 ;;
-    (t) tag=$a ;;
-    (*) echo "Unknown argument: $a"; usage; exit 1 ;;
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      show_usage
+      exit 0
+      ;;
+    -t|--tag)
+      if [[ -n "${2:-}" ]] ; then
+        tag="$2"
+        shift
+      else
+        echo "$1 must be followed by a tag."
+        exit 1
+      fi
+      ;;
+    *)
+      show_usage
+      exit 1
+      ;;
   esac
+  shift
 done
+
 
 git_fetch
